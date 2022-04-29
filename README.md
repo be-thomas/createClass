@@ -1,25 +1,40 @@
-# class.lua
+# createClass.lua
 
 <img src="https://travis-ci.org/jonstoler/class.lua.svg" />
 
 Make lua Object-Oriented!
 
-	require "class"
-	
-	Dog = class()
-	function Dog:bark()
-		print "woof!"
+	-- Usage:
+	--------------------------
+	local createClass = require("createClass")
+	Animal = createClass()
+
+	function Animal:constructor(species)
+	    self.species = species
 	end
 
-	SleepyDog = Dog:extend()
-	function SleepyDog:bark()
-		print "snore!"
+	local animal = Animal("dog")
+	-- static variable
+	Animal.domesticated = true
+
+
+
+	-- Inheritance :-
+	-----------------------
+	local Dog = createClass(Animal)
+
+	function Dog:constructor()
+	    self.super.constructor(self, "dog")
 	end
 
-	local d = Dog()
-	local s = SleepyDog()
-	d:bark()
-	s:bark()
+	local dog = Dog()
+	print(dog.species)
+	-- print static variable
+	print(Dog.domesticated)
+
+	-- both classes & objects can be printed : 
+	print(tostring(Dog))
+	print(tostring(dog))
 
 ### Features
 
@@ -27,26 +42,55 @@ Make lua Object-Oriented!
 - small (one file, just over 100 lines, about 2KB)
 - support for static and instance properties
 - easy inline getters/setters
+- support for `super`
+- support for printing classes & objects
+
+
 
 ## Usage
 
 ### Creating a class
 
-Classes can be created with the `class()` function or by creating a subclass of `Class`. Classes are just like any other lua variable. They can be local or global. I recommend using CapitalCamelCase names and creating classes globally. This way, you can give classes their own files and it's easy to import them into any other files that need them.
+Classes can be created with the `createClass()` function. Classes are just like any other lua variable. They can be local or global. I recommend using CapitalCamelCase names. This way, you can give classes their own files and it's easy to import them into any other files that need them.
 
-	-- these are the same thing
-	MyAwesomeClass = class()
-	MyAwesomeClass = Class:extend()
+	-- create new class
+	Animal = createClass()
+
 
 ### Creating a subclass
 
-Subclasses can be created with the `extend()` function. They inherit all properties from their parent classes. 
+Subclasses can be created with the `createClass(superClass)` function. They inherit all properties from their super classes. 
 
-You can also use the `class()` function, with a parent class as a parameter.
+	-- creates a subclass, here Animal is the super class of Dog
+	Dog = createClass(Animal)
 
-	-- these are the same thing
-	MySubClass = MyAwesomeClass:extend()
-	MySubClass = class(MyAwesomeClass)
+	
+### Printing Class/Object
+Both Classes and objects can be printed with proper indentation:
+
+	print(tostring(Dog))
+	print(tostring(dog))
+
+Sample output:
+	
+	class {
+	  set: function: 0x010085a628,
+	  super: class {
+	    constructor: function: 0x0100864db0,
+	    set: function: 0x010085a628,
+	    _: table: 0x0100864c10,
+	  },
+	  constructor: function: 0x0100867298,
+	  _: table: 0x0100867040,
+	}
+
+	object {
+	  set: function: 0x010085a628,
+	  super: table: 0x0100867348,
+	  constructor: function: 0x0100867298,
+	  _: table: 0x01008674e0,
+	}
+
 
 ### Setting properties
 
@@ -68,9 +112,9 @@ Static properties have the same features as other properties (getters/setters, i
 
 ### Creating a constructor
 
-The `init` function is called when your class is initialized. It takes an arbitrary number of arguments.
+The `constructor` function is called when your class is initialized. It takes an arbitrary number of arguments.
 
-	function MyAwesomeClass:init(a, b, c)
+	function MyAwesomeClass:constructor(a, b, c)
 		self.sum = a + b + c
 	end
 
@@ -78,8 +122,7 @@ The `init` function is called when your class is initialized. It takes an arbitr
 
 You can create a new instance of your class with the `new()` function, or by simply calling the class name as a function. Pass constructor arguments to this function.
 
-	-- these are the same
-	local awesome = MyAwesomeClass:new(1, 2, 3)
+	-- create object from class
 	local awesome = MyAwesomeClass(1, 2, 3)
 
 	print(awesome.sum) --> 6
@@ -149,15 +192,8 @@ There is no built-in mechanism for private or protected variables. These feature
 
 The following are special properties/functions that you should not use for other purposes in your classes, because the class library itself uses them:
 
-	-- GLOBALS
-	Class
-	class()
-
 	-- CLASS PROPERTIES/METHODS
 	_
-	new()
-	init()
-	extend()
 	set()
 	__index metatable
 	__newindex metatable
