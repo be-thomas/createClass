@@ -12,9 +12,8 @@ createClass => OOP on steroids
 - support for `super`
 - support for getters, setters & watchers with ZERO overhead
 - support for printing classes & instances
-- - printing a class/instance, will also PROPERLY print it's members ( even tables )
 
-
+```
 
 	-- Usage:
 	--------------------------
@@ -48,7 +47,7 @@ createClass => OOP on steroids
 	print(tostring(Dog))
 	print(tostring(dog))
 
-
+```
 
 ## Usage
 
