@@ -2,7 +2,19 @@
 
 <img src="https://travis-ci.org/jonstoler/class.lua.svg" />
 
-Make lua Object-Oriented!
+createClass => OOP on steroids
+
+### Features
+
+- simple usage & implementation
+- small (one file, just over 150 lines, about 2KB)
+- support for static and instance properties
+- support for `super`
+- support for getters, setters & watchers with ZERO overhead
+- support for printing classes & instances
+- - printing a class/instance, will also PROPERLY print it's members ( even tables )
+
+
 
 	-- Usage:
 	--------------------------
@@ -32,18 +44,9 @@ Make lua Object-Oriented!
 	-- print static variable
 	print(Dog.domesticated)
 
-	-- both classes & objects can be printed : 
+	-- both classes & instances can be printed : 
 	print(tostring(Dog))
 	print(tostring(dog))
-
-### Features
-
-- simple usage & implementation
-- small (one file, just over 100 lines, about 2KB)
-- support for static and instance properties
-- easy inline getters/setters
-- support for `super`
-- support for printing classes & objects
 
 
 
@@ -65,8 +68,8 @@ Subclasses can be created with the `createClass(superClass)` function. They inhe
 	Dog = createClass(Animal)
 
 	
-### Printing Class/Object
-Both Classes and objects can be printed with proper indentation:
+### Printing Class/Instance
+Both Classes and instances can be printed with proper indentation:
 
 	print(tostring(Dog))
 	print(tostring(dog))
@@ -84,7 +87,7 @@ Sample output:
 	  _: table: 0x0100867040,
 	}
 
-	object {
+	instance {
 	  set: function: 0x010085a628,
 	  super: table: 0x0100867348,
 	  constructor: function: 0x0100867298,
@@ -122,7 +125,7 @@ The `constructor` function is called when your class is initialized. It takes an
 
 You can create a new instance of your class with the `new()` function, or by simply calling the class name as a function. Pass constructor arguments to this function.
 
-	-- create object from class
+	-- create instance of class
 	local awesome = MyAwesomeClass(1, 2, 3)
 
 	print(awesome.sum) --> 6
