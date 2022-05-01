@@ -40,7 +40,7 @@ function Object:__tostring()
     if rawget(self, "__index") == nil then
         instance_or_class = "instance"
     end
-    local contents = { instance_or_class, "%s {\n" }
+    local contents = { instance_or_class, " {\n" }
     for k, v in pairs(self) do
         if k ~= "__oop_type" then
             if k == self then
