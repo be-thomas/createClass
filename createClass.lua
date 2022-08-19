@@ -79,7 +79,7 @@ function Object:__call(...)
 end
 
 function Object:set(props)
-    assert(rawget(self, '__index') ~= nil, "Error!, watch() cannot be called on instances! Call it from the Class!")
+    assert(rawget(self, '__index') ~= nil, "Error!, set() cannot be called on instances! Call it from the Class!")
     local name = props.name
     local default_value = props.default_value
     local getter = props.getter
